@@ -36,6 +36,9 @@ export default class Tile {
         } else if(this.value == 4) {
             // selected tile
              this.c.fillStyle = 'rgba(247, 255, 131, 1.0)';
+        } else if(this.value == 5) {
+            // search algorithm
+            this.c.fillStyle = 'rgba(0, 255, 131, 1.0)';
         }
         this.c.fillRect(x, y, this.size, this.size);
         this.c.strokeStyle = this.wallColor;

@@ -1,6 +1,8 @@
 import Tile from './tile.js';
 import Grid from './grid.js';
+
 import BSTree from './algorithms/btree.js';
+import RecursiveBacktracker from './algorithms/recursiveBacktracker.js';
 
 var canvas = document.querySelector('canvas');
 var context = canvas.getContext("2d"); // canvas context
@@ -16,7 +18,7 @@ const center_x = 9;
 const center_y = 6;
 // user variables
 const width = 30;
-const height = 20;
+const height = 30;
 
 // initial window sizes
 drawElements();
@@ -25,7 +27,8 @@ drawElements();
 const maze = new Grid(width, height, tilesize, context);
 var grid = maze.grid;
 var current = maze.current;
-new BSTree(grid, width, height);
+// new BSTree(grid, width, height);
+new RecursiveBacktracker(grid, width, height, maze.randomCell());
 
 drawTiles();
 
