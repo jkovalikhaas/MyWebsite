@@ -1,0 +1,33 @@
+*  {
+    margin: 0px;
+    padding: 0px;
+}
+
+nav {
+    height: 10vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(17, 17, 17, 0.5);
+    align-items: center;
+    justify-content: space-evenly;
+    display: flex;
+}
+
+.title {
+    color: rgb(212, 212, 212);
+    font-size: 24px;
+}
+
+body {
+    background-color: rgb(46, 46, 46);
+}
+
+canvas {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
