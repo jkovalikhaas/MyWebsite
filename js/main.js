@@ -12,7 +12,8 @@ var tilesize = 0;
 var complete = false;
 const defaultWidth = 17;
 const defaultHeight = 11;
-
+const center_x = 9;
+const center_y = 6;
 // user variables
 const width = 30;
 const height = 20;
@@ -69,12 +70,31 @@ function click(e) {
 
     const x = parseInt((e.clientX - offset(canvas).left) / tilesize);
     const y = parseInt((e.clientY - offset(canvas).top) / tilesize); 
+    // get x/y offset based on current pos
+    var xOffset = 0;
+    if (current.x - center_x >= 0) {
+        xOffset = current.x - center_x + 1;
+    } 
+    if (current.x + center_x >= width) {
+        xOffset = width - defaultWidth;
+    }
+    var yOffset = 0;
+    if (current.y - center_y >= 0) {
+        yOffset = current.y - center_y + 1;
+    }
+    if (current.y + center_y >= height) {
+        yOffset = height - defaultHeight;
+    }
 
-    if(grid[x][y].value == 1) {
+    const relativeX = xOffset + x;
+    const relativeY = yOffset + y;
+    if (grid[relativeX][relativeY].value == 1) {
         current.setVal(1);
-        maze.setCurrent(x, y);
+        maze.setCurrent(relativeX, relativeY);
         current = maze.current;
     }
+
+    drawTiles();
 }
 
 // gets mouse click posistion in relationship too canvas
@@ -84,8 +104,6 @@ document.addEventListener('keyup', pressed(false));
 document.addEventListener('keydown', pressed);
 
 function drawTiles() {
-    const center_x = 9;
-    const center_y = 6;
     // starting x of drawn area
     var start_x = 0;
     if (current.x - center_x >= 0) {

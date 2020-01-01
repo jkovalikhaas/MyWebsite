@@ -28,11 +28,12 @@ export default class Grid {
     }
 
     setStartEnd() {
-        const start = Math.floor(Math.random() * this.height);
-        const end   = Math.floor(Math.random() * this.height);
+        const start = this.randomCell();
+        var end     = this.randomCell();
+        while (start.index == end.index) end = this.randomCell();
 
-        this.setCurrent(0, start);
-        this.grid[this.width - 1][end].value = 3;
+        this.setCurrent(start.x, start.y);
+        this.grid[end.x][end.y].value = 3;
     }
 
     neighborTiles() {
@@ -50,6 +51,13 @@ export default class Grid {
                 this.grid[i][j].setNeighbors(north, south, east, west);
             }
         }
+    }
+
+    // gets random cell
+    randomCell() {
+        const x = Math.floor(Math.random() * this.width);
+        const y = Math.floor(Math.random() * this.height);
+        return this.grid[x][y];
     }
 
     setCurrent(x, y) {
