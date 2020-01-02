@@ -16,33 +16,33 @@ export default class Tile {
 
         this.sides = [1, 1, 1, 1];
         this.neighbors = Array(4);
-        this.wallColor = 'rgba(47, 43, 255, 1.0)';
+        this.wallColor = 'black';
     }
 
     // control shapes appearence 
     draw(x=this.cvsX, y=this.cvsY) {
-        if(this.value == 0) {
+        if (this.value == 0) {
             // 'empty' tile
-            this.c.fillStyle = 'rgba(131, 210, 255, 1.0)';
-        } else if(this.value == 1) {
+            this.c.fillStyle = 'gray';
+        } else if (this.value == 1) {
             // seen
-            this.c.fillStyle = 'rgba(68, 0, 177, 1.0)';
-        } else if(this.value == 2) {
+            this.c.fillStyle = 'orange';
+        } else if (this.value == 2) {
             // wall
             this.c.fillStyle = this.wallColor;
-        } else if(this.value == 3) {
+        } else if (this.value == 3) {
             // end tile
-            this.c.fillStyle = 'rgba(250, 50, 170, 1.0)';
-        } else if(this.value == 4) {
+            this.c.fillStyle = 'red';
+        } else if (this.value == 4) {
             // selected tile
-             this.c.fillStyle = 'rgba(247, 255, 131, 1.0)';
-        } else if(this.value == 5) {
+            this.c.fillStyle = 'yellow';
+        } else if (this.value == 5) {
             // search algorithm
             this.c.fillStyle = 'rgba(0, 255, 131, 1.0)';
         }
         this.c.fillRect(x, y, this.size, this.size);
         this.c.strokeStyle = this.wallColor;
-        this.c.lineWidth   = 1;
+        this.c.lineWidth = 1;
         this.c.strokeRect(x, y, this.size, this.size);
 
         this.drawBox(x, y);
@@ -80,16 +80,6 @@ export default class Tile {
             if(this.sides[i] == 1) {
                 this.line(i, x, y);
             }
-        }
-    }
-
-    // check if clicked
-    clicked(x, y) {
-        if(x > this.cvsX && x < this.maxX && y > this.cvsY && y < this.maxY) {
-            // change color
-            this.c.clearRect(this.cvsX, this.cvsY, this.size, this.size); // clear first
-            this.c.fillStyle = 'rgba(0, 255, 0, 1.0)';
-            this.c.fillRect(this.x, this.y, this.size, this.size);
         }
     }
 
