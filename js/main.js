@@ -1,4 +1,3 @@
-import Tile from './tile.js';
 import Grid from './grid.js';
 
 import BSTree from './algorithms/btree.js';
@@ -6,8 +5,9 @@ import RecursiveBacktracker from './algorithms/recursiveBacktracker.js';
 
 var canvas = document.querySelector('canvas');
 var context = canvas.getContext("2d"); // canvas context
-// other divs
-var nav = document.getElementById('nav');
+
+const goButton = document.querySelector('.go');
+goButton.addEventListener('click', createMaze);
 
 // init variables
 var tilesize = 0;
@@ -17,20 +17,43 @@ const defaultHeight = 11;
 const center_x = 9;
 const center_y = 6;
 // user variables
-const width = 30;
-const height = 30;
+var width = defaultWidth;
+var height = defaultHeight;
+calcSize();
 
 // initial window sizes
 drawElements();
 
 // get grid
-const maze = new Grid(width, height, tilesize, context);
+var maze = new Grid(width, height, tilesize, context);
 var grid = maze.grid;
 var current = maze.current;
 // new BSTree(grid, width, height);
 new RecursiveBacktracker(grid, width, height, maze.randomCell());
 
 drawTiles();
+
+export function calcSize(s) {
+    if(s == 0) {
+        width = defaultWidth;
+        height = defaultHeight;
+    } else if(s == 1) {
+        width = 30;
+        height = 30;
+    } else if(s == 2) {
+        width = 60;
+        height = 60;
+    } else if(s == 3) {
+        width = 120;
+        height = 120;
+    } else if(s == 4) {
+        width = 300;
+        height = 300;
+    } else if(s == 5) {
+        width = 1000;
+        height = 1000;
+    }
+}
 
 function move(dir) {
     if (dir == "ArrowUp" || dir == "w") {
@@ -196,6 +219,19 @@ function drawElements() {
 
     canvas.width = tilesize * defaultWidth;
     canvas.height = size;
+}
+
+// creates maze
+function createMaze() {
+    drawElements();
+
+    maze = new Grid(width, height, tilesize, context);
+    grid = maze.grid;
+    current = maze.current;
+    // new BSTree(grid, width, height);
+    new RecursiveBacktracker(grid, width, height, maze.randomCell());
+
+    drawTiles();
 }
 
 // gets offset of element
