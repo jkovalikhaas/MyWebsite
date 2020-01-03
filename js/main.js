@@ -32,26 +32,23 @@ new RecursiveBacktracker(grid, width, height, maze.randomCell());
 
 drawTiles();
 
-// single click
-function pressed(e) {
-    if(complete) return;
-    
-    if(e.key == "ArrowUp" || e.key == "w") {
-        if(current.neighbors[0] != null && current.sides[0] == 0) {
+function move(dir) {
+    if (dir == "ArrowUp" || dir == "w") {
+        if (current.neighbors[0] != null && current.sides[0] == 0) {
             grid[current.x][current.y].setVal(1);
             maze.setCurrent(current.x, current.y - 1);
         }
-    } else if(e.key == "ArrowDown" || e.key == "s") {
-        if(current.neighbors[1] != null && current.sides[1] == 0) {
+    } else if (dir == "ArrowDown" || dir == "s") {
+        if (current.neighbors[1] != null && current.sides[1] == 0) {
             grid[current.x][current.y].setVal(1);
             maze.setCurrent(current.x, current.y + 1);
         }
-    } else if (e.key == "ArrowRight" || e.key == "d") {
+    } else if (dir == "ArrowRight" || dir == "d") {
         if (current.neighbors[2] != null && current.sides[2] == 0) {
             grid[current.x][current.y].setVal(1);
             maze.setCurrent(current.x + 1, current.y);
         }
-    } else if (e.key == "ArrowLeft" || e.key == "a") {
+    } else if (dir == "ArrowLeft" || dir == "a") {
         if (current.neighbors[3] != null && current.sides[3] == 0) {
             grid[current.x][current.y].setVal(1);
             maze.setCurrent(current.x - 1, current.y);
@@ -61,23 +58,25 @@ function pressed(e) {
     }
 
     current = maze.current;
-    if(current.value == 3) {
+    if (current.value == 3) {
         complete = true;
         alert("You Completed the Maze!\nRefresh for New Maze");
     }
     drawTiles();
 }
 
-function click(e) {
-    if (complete) return;
+// single click
+function pressed(e) {
+    if(complete) return;
+    move(e.key);
+}
 
-    const x = parseInt((e.clientX - offset(canvas).left) / tilesize);
-    const y = parseInt((e.clientY - offset(canvas).top) / tilesize); 
+function relativePos(x, y) {
     // get x/y offset based on current pos
     var xOffset = 0;
     if (current.x - center_x >= 0) {
         xOffset = current.x - center_x + 1;
-    } 
+    }
     if (current.x + center_x >= width) {
         xOffset = width - defaultWidth;
     }
@@ -88,18 +87,68 @@ function click(e) {
     if (current.y + center_y >= height) {
         yOffset = height - defaultHeight;
     }
+    return [xOffset + x, yOffset + y];
+}
 
-    const relativeX = xOffset + x;
-    const relativeY = yOffset + y;
-    if (grid[relativeX][relativeY].value == 1) {
+function tele(x, y) {
+    if (complete) return;
+
+    if (grid[x][y].value == 1) {
         current.setVal(1);
-        maze.setCurrent(relativeX, relativeY);
+        maze.setCurrent(x, y);
         current = maze.current;
     }
 
     drawTiles();
 }
 
+function click(e) {
+    const x = parseInt((e.clientX - offset(canvas).left) / tilesize);
+    const y = parseInt((e.clientY - offset(canvas).top) / tilesize);
+
+    const newPos = relativePos(x, y);
+    const relativeX = newPos[0];
+    const relativeY = newPos[1];
+    tele(relativeX, relativeY);
+}
+
+function getQuad(x, y) {
+    const quad_x = Math.floor(center_x / 2);
+    const quad_y = Math.floor(center_y / 2);
+    const x_strip = x >= quad_x && x < center_x + quad_x;
+    const y_strip = y >= quad_y && y < center_y + quad_y;
+
+    if (y < center_y && x_strip) return 0;
+    else if (y > center_y && x_strip) return 1;
+    else if (x < center_x && y_strip) return 2;
+    else if (x > center_x && y_strip) return 3;
+}
+
+function touched(e) {
+    if(e.touches == null) return;
+    if(e.touches.length > 1) return;    // only works with 1 touch
+
+    const current = e.touches[0];
+    const x = parseInt((current.clientX - offset(canvas).left) / tilesize);
+    const y = parseInt((current.clientY - offset(canvas).top) / tilesize);
+    
+    const newPos = relativePos(x, y);
+    const relativeX = newPos[0];
+    const relativeY = newPos[1];
+
+    if(grid[relativeX][relativeY] == 1) tele(relativeX, relativeY);
+    else {
+        const quadrant = getQuad(x, y);
+        if (quadrant == 0) move("w");
+        else if (quadrant == 1) move("s");
+        else if (quadrant == 2) move("a");
+        else if (quadrant == 3) move("d");
+    }
+}
+
+// touch listeners for phone
+canvas.addEventListener('touchstart', touched);
+canvas.addEventListener('touchend', touched(false));
 // gets mouse click posistion in relationship too canvas
 canvas.addEventListener('click', click);
 // key listeners
