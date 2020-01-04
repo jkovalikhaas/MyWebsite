@@ -49,9 +49,6 @@ export function calcSize(s) {
     } else if(s == 4) {
         width = 120;
         height = 120;
-    } else if(s == 5) {
-        width = 300;
-        height = 300;
     }
 }
 
@@ -239,15 +236,9 @@ function createMaze() {
     // new BSTree(grid, width, height);
     new RecursiveBacktracker(grid, width, height, maze.randomCell());
 
-    if(width > 120) {
-        console.log("yay")
-        const temp = maze.randomCell();
-        maze.setEnd(temp.x, temp.y);
-    } else {
-        const longestPath = new LongestPath(grid, width, height, current);
-        const farNode = longestPath.maxPath();
-        maze.setEnd(farNode.x, farNode.y);
-    }
+    const longestPath = new LongestPath(grid, width, height, current);
+    const farNode = longestPath.maxPath();
+    maze.setEnd(farNode.x, farNode.y);
     drawTiles();
 }
 
