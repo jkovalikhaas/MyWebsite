@@ -4,6 +4,7 @@ import BSTree from './algorithms/btree.js';
 import RecursiveBacktracker from './algorithms/recursiveBacktracker.js';
 
 import AStar from './algorithms/astar.js';
+import LongestPath from './algorithms/longestPath.js';
 
 var canvas = document.querySelector('canvas');
 var context = canvas.getContext("2d"); // canvas context
@@ -25,18 +26,12 @@ const center_y = 6;
 var width = defaultWidth;
 var height = defaultHeight;
 calcSize();
+// main vars
+var maze = null;
+var grid = null;
+var current = null;
 
-// initial window sizes
-drawElements();
-
-// get grid
-var maze = new Grid(width, height, tilesize, context);
-var grid = maze.grid;
-var current = maze.current;
-// new BSTree(grid, width, height);
-new RecursiveBacktracker(grid, width, height, maze.randomCell());
-
-drawTiles();
+createMaze();
 
 export function calcSize(s) {
     if(s == 0) {
@@ -243,6 +238,9 @@ function createMaze() {
     current = maze.current;
     // new BSTree(grid, width, height);
     new RecursiveBacktracker(grid, width, height, maze.randomCell());
+    const longestPath = new LongestPath(grid, width, height, current);
+    const farNode = longestPath.maxPath();
+    maze.setEnd(farNode.x, farNode.y);
 
     drawTiles();
 }

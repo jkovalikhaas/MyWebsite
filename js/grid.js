@@ -1,4 +1,5 @@
 import Tile from './tile.js';
+import LongestPath from './algorithms/longestPath.js';
 
 export default class Grid {
     constructor(width, height, size, c) {
@@ -10,8 +11,8 @@ export default class Grid {
         this.current = null;   // current node
         this.end = null;
         this.grid = this.createGrid();
-        this.setStartEnd();
         this.neighborTiles();
+        this.setStart();
     }
 
     createGrid() {
@@ -28,13 +29,9 @@ export default class Grid {
         return array;
     }
 
-    setStartEnd() {
+    setStart() {
         const start = this.randomCell();
-        var end     = this.randomCell();
-        while (start.index == end.index) end = this.randomCell();
-
         this.setCurrent(start.x, start.y);
-        this.setEnd(end.x, end.y);
     }
 
     neighborTiles() {

@@ -80,7 +80,7 @@ body {
 .go, .solve {
     display: inline-block;
     position: absolute;
-    margin-top: 12vh;
+    top: 12vh;
 
     border-radius: 15px;
     border: 2px solid rgb(212, 212, 212, 0.8);
