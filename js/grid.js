@@ -8,6 +8,7 @@ export default class Grid {
         this.c = c;
 
         this.current = null;   // current node
+        this.end = null;
         this.grid = this.createGrid();
         this.setStartEnd();
         this.neighborTiles();
@@ -33,7 +34,7 @@ export default class Grid {
         while (start.index == end.index) end = this.randomCell();
 
         this.setCurrent(start.x, start.y);
-        this.grid[end.x][end.y].value = 3;
+        this.setEnd(end.x, end.y);
     }
 
     neighborTiles() {
@@ -58,6 +59,11 @@ export default class Grid {
         const x = Math.floor(Math.random() * this.width);
         const y = Math.floor(Math.random() * this.height);
         return this.grid[x][y];
+    }
+
+    setEnd(x, y) {
+        this.end = this.grid[x][y];
+        this.end.setVal(3);
     }
 
     setCurrent(x, y) {

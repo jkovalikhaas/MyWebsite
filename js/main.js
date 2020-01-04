@@ -3,11 +3,16 @@ import Grid from './grid.js';
 import BSTree from './algorithms/btree.js';
 import RecursiveBacktracker from './algorithms/recursiveBacktracker.js';
 
+import AStar from './algorithms/astar.js';
+
 var canvas = document.querySelector('canvas');
 var context = canvas.getContext("2d"); // canvas context
 
 const goButton = document.querySelector('.go');
 goButton.addEventListener('click', createMaze);
+
+const solveButton = document.querySelector('.solve');
+solveButton.addEventListener('click', solveMaze);
 
 // init variables
 var tilesize = 0;
@@ -38,21 +43,29 @@ export function calcSize(s) {
         width = defaultWidth;
         height = defaultHeight;
     } else if(s == 1) {
-        width = 30;
-        height = 30;
+        width = 20;
+        height = 20;
     } else if(s == 2) {
-        width = 60;
-        height = 60;
+        width = 40;
+        height = 40;
     } else if(s == 3) {
+        width = 75;
+        height = 75;
+    } else if(s == 4) {
         width = 120;
         height = 120;
-    } else if(s == 4) {
+    } else if(s == 5) {
         width = 300;
         height = 300;
-    } else if(s == 5) {
-        width = 1000;
-        height = 1000;
     }
+}
+
+function solveMaze() {
+    const path = new AStar(grid, width, height, maze.current, maze.end).generateSolution();
+    for(var i = 1; i < path.length - 1; i++) {
+        grid[path[i].x][path[i].y].setVal(5);
+    }
+    drawTiles();
 }
 
 function move(dir) {
