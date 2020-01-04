@@ -22,14 +22,14 @@ const defaultWidth = 17;
 const defaultHeight = 11;
 const center_x = 9;
 const center_y = 6;
-// user variables
-var width = defaultWidth;
-var height = defaultHeight;
-calcSize();
 // main vars
 var maze = null;
 var grid = null;
 var current = null;
+// user variables
+var width = defaultWidth;
+var height = defaultHeight;
+calcSize(0);
 
 createMaze();
 
@@ -238,10 +238,16 @@ function createMaze() {
     current = maze.current;
     // new BSTree(grid, width, height);
     new RecursiveBacktracker(grid, width, height, maze.randomCell());
-    const longestPath = new LongestPath(grid, width, height, current);
-    const farNode = longestPath.maxPath();
-    maze.setEnd(farNode.x, farNode.y);
 
+    if(width > 120) {
+        console.log("yay")
+        const temp = maze.randomCell();
+        maze.setEnd(temp.x, temp.y);
+    } else {
+        const longestPath = new LongestPath(grid, width, height, current);
+        const farNode = longestPath.maxPath();
+        maze.setEnd(farNode.x, farNode.y);
+    }
     drawTiles();
 }
 
